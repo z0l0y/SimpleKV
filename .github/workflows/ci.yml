@@ -45,7 +45,7 @@ jobs:
         run: mvn -B -ntp clean verify -Djacoco.skip=true
 
       - name: Check code quality
-        run: mvn -B -ntp spotbugs:check
+        run: mvn -B -ntp install spotbugs:check
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
