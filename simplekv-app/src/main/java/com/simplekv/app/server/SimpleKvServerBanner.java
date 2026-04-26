@@ -2,7 +2,6 @@ package com.simplekv.app.server;
 
 import com.simplekv.app.config.SimpleKvServerProperties;
 import com.simplekv.app.config.SimpleKvStorageProperties;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -22,10 +21,6 @@ public class SimpleKvServerBanner {
     private final String dataDir;
     private final boolean bannerEnabled;
 
-    @SuppressFBWarnings(
-            value = "EI_EXPOSE_REP2",
-            justification = "Constructor extracts immutable primitive values from mutable properties objects."
-    )
     public SimpleKvServerBanner(SimpleKvServerProperties serverProperties,
                                 SimpleKvStorageProperties storageProperties) {
         this.host = serverProperties.getHost();
