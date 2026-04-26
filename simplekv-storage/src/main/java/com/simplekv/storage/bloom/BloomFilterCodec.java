@@ -24,7 +24,10 @@ public final class BloomFilterCodec {
         header.putInt(data.length);
         header.flip();
 
-        Files.createDirectories(file.getParent());
+        Path parent = file.getParent();
+        if (parent != null) {
+            Files.createDirectories(parent);
+        }
         try (FileChannel channel = FileChannel.open(
                 file,
                 StandardOpenOption.CREATE,

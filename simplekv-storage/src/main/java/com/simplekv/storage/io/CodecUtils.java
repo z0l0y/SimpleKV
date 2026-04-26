@@ -27,7 +27,7 @@ public final class CodecUtils {
     public static byte[] getByteArray(ByteBuffer buffer) {
         int length = buffer.getInt();
         if (length < 0) {
-            return null;
+            return new byte[0];
         }
         byte[] value = new byte[length];
         buffer.get(value);

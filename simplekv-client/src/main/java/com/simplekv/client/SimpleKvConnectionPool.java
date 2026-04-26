@@ -63,7 +63,7 @@ public class SimpleKvConnectionPool {
         lock.lock();
         try {
             if (!closed && client != null && client.isConnected()) {
-                availableConnections.offer(client);
+                availableConnections.add(client);
             }
         } finally {
             lock.unlock();

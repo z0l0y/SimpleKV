@@ -93,7 +93,7 @@ class StorageModelAndUtilsTest {
         buffer.flip();
 
         assertArrayEquals("v1".getBytes(StandardCharsets.UTF_8), CodecUtils.getByteArray(buffer));
-        assertEquals(null, CodecUtils.getByteArray(buffer));
+        assertArrayEquals(new byte[0], CodecUtils.getByteArray(buffer));
 
         assertEquals(Integer.BYTES + 2, CodecUtils.estimateByteArraySize("v1".getBytes(StandardCharsets.UTF_8)));
         assertEquals(Integer.BYTES, CodecUtils.estimateByteArraySize(null));

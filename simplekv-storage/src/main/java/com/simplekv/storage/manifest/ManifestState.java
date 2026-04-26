@@ -32,6 +32,6 @@ public class ManifestState {
     }
 
     public void setFiles(List<SstableMetadata> files) {
-        this.files = files;
+        this.files = files == null ? new ArrayList<>() : new ArrayList<>(files);
     }
 }

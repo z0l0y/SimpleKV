@@ -108,7 +108,17 @@ public final class SstableReader {
     }
 
     public SstableMetadata metadata() {
-        return metadata;
+        return new SstableMetadata(
+                metadata.getFileId(),
+                metadata.getLevel(),
+                metadata.getFileName(),
+                metadata.getMinKey(),
+                metadata.getMaxKey(),
+                metadata.getBloomFileName(),
+                metadata.getMinSequence(),
+                metadata.getMaxSequence(),
+                metadata.getEntryCount()
+        );
     }
 
     public List<InternalEntry> allEntries() {
@@ -199,7 +209,7 @@ public final class SstableReader {
     private static byte[] readByteArray(FileChannel channel) throws IOException {
         int length = readInt(channel);
         if (length < 0) {
-            return null;
+            return new byte[0];
         }
         ByteBuffer buffer = ByteBuffer.allocate(length);
         readFully(channel, buffer);

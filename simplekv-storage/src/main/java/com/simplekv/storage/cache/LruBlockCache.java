@@ -18,7 +18,7 @@ public final class LruBlockCache<K, V> {
         this.cache = new LinkedHashMap<K, V>(maxEntries, 0.75f, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
-                return size() > maxEntries;
+                return super.size() > LruBlockCache.this.maxEntries;
             }
         };
     }

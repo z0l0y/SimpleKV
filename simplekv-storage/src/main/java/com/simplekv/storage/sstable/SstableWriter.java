@@ -116,14 +116,16 @@ public final class SstableWriter {
         InternalKey last = sorted.get(sorted.size() - 1).key();
         long minSequence = sorted.stream().mapToLong(e -> e.key().sequence()).min().orElse(0L);
         long maxSequence = sorted.stream().mapToLong(e -> e.key().sequence()).max().orElse(0L);
+        String sstableFileName = fileNameOf(sstableFile, "sstable file");
+        String bloomFileName = fileNameOf(bloomFile, "bloom file");
 
         return new SstableMetadata(
                 fileId,
                 level,
-                sstableFile.getFileName().toString(),
+            sstableFileName,
                 first.userKey(),
                 last.userKey(),
-                bloomFile.getFileName().toString(),
+            bloomFileName,
                 minSequence,
                 maxSequence,
                 sorted.size()
@@ -181,5 +183,13 @@ public final class SstableWriter {
         while (buffer.hasRemaining()) {
             channel.write(buffer);
         }
+    }
+
+    private static String fileNameOf(Path path, String description) {
+        Path fileName = path.getFileName();
+        if (fileName == null) {
+            throw new IllegalArgumentException(description + " must include a file name");
+        }
+        return fileName.toString();
     }
 }

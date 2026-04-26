@@ -27,6 +27,10 @@ public final class StorageLayout {
     }
 
     public static Path bloomFileForSstable(Path sstableFile) {
-        return sstableFile.resolveSibling(sstableFile.getFileName().toString() + ".bf");
+        Path fileName = sstableFile.getFileName();
+        if (fileName == null) {
+            throw new IllegalArgumentException("sstableFile must include a file name");
+        }
+        return sstableFile.resolveSibling(fileName.toString() + ".bf");
     }
 }

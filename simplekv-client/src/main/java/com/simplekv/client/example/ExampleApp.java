@@ -90,29 +90,23 @@ public class ExampleApp {
     }
 
     private static void example3SetOps(SimpleKvClient client) throws IOException {
-        
         System.out.println("Adding user interests...");
         client.sadd("user:1:interests", "java", "python", "go", "rust");
         client.sadd("user:2:interests", "java", "kotlin", "scala", "clojure");
 
-        
         SimpleKvResponse user1Interests = client.smembers("user:1:interests");
         System.out.println("User 1 interests: " + user1Interests.getPayload());
 
-        
         SimpleKvResponse hasJava = client.sismember("user:1:interests", "java");
-        System.out.println("User 1 likes Java: " + (hasJava.getFirst().equals("1") ? "Yes" : "No"));
+        System.out.println("User 1 likes Java: " + ("1".equals(hasJava.getFirst()) ? "Yes" : "No"));
 
-        
         SimpleKvResponse cardResponse = client.scard("user:1:interests");
         System.out.println("User 1 has " + cardResponse.getFirst() + " interests");
 
-        
         client.del("user:1:interests", "user:2:interests");
     }
 
     private static void example4HashOps(SimpleKvClient client) throws IOException {
-        
         System.out.println("Storing product information...");
         client.hset("product:1",
             "name", "Laptop",
@@ -121,29 +115,23 @@ public class ExampleApp {
             "stock", "50"
         );
 
-        
         SimpleKvResponse name = client.hget("product:1", "name");
         SimpleKvResponse price = client.hget("product:1", "price");
         System.out.println("Product: " + name.getFirst() + " - $" + price.getFirst());
 
-        
         SimpleKvResponse allDetails = client.hgetall("product:1");
         System.out.println("All details: " + allDetails.getPayload());
 
-        
         SimpleKvResponse hasReview = client.hexists("product:1", "review");
-        System.out.println("Has review: " + (hasReview.getFirst().equals("1") ? "Yes" : "No"));
+        System.out.println("Has review: " + ("1".equals(hasReview.getFirst()) ? "Yes" : "No"));
 
-        
         SimpleKvResponse fieldCount = client.hlen("product:1");
         System.out.println("Number of fields: " + fieldCount.getFirst());
 
-        
         client.hset("product:1", "stock", "49");
         SimpleKvResponse updatedStock = client.hget("product:1", "stock");
         System.out.println("Updated stock: " + updatedStock.getFirst());
 
-        
         client.del("product:1");
     }
 }

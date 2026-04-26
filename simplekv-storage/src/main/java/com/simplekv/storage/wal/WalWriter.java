@@ -26,7 +26,10 @@ public final class WalWriter implements Closeable {
     public WalWriter(Path walFile, FsyncPolicy fsyncPolicy, long fsyncEveryMillis) throws IOException {
         this.fsyncPolicy = fsyncPolicy;
         this.fsyncEveryMillis = fsyncEveryMillis;
-        Files.createDirectories(walFile.getParent());
+        Path parent = walFile.getParent();
+        if (parent != null) {
+            Files.createDirectories(parent);
+        }
         this.channel = FileChannel.open(
                 walFile,
                 StandardOpenOption.CREATE,

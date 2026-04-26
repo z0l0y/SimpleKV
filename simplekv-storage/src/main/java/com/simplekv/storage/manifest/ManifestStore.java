@@ -39,11 +39,12 @@ public final class ManifestStore {
     public void save(ManifestState state) throws IOException {
         Path manifestFile = StorageLayout.manifestFile(dataDir);
         Files.createDirectories(dataDir);
-        Path tempFile = manifestFile.resolveSibling(manifestFile.getFileName() + ".tmp");
+        String manifestFileName = fileNameOf(manifestFile);
+        Path tempFile = manifestFile.resolveSibling(manifestFileName + ".tmp");
         objectMapper.writeValue(tempFile.toFile(), state);
         Files.move(tempFile, manifestFile, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
         Files.write(currentFile,
-            Arrays.asList(manifestFile.getFileName().toString()),
+            Arrays.asList(manifestFileName),
                 StandardOpenOption.CREATE,
                 StandardOpenOption.TRUNCATE_EXISTING,
                 StandardOpenOption.WRITE);
@@ -58,5 +59,13 @@ public final class ManifestStore {
             return StorageLayout.manifestFile(dataDir);
         }
         return dataDir.resolve(lines.get(0).trim());
+    }
+
+    private static String fileNameOf(Path path) {
+        Path fileName = path.getFileName();
+        if (fileName == null) {
+            return path.toString();
+        }
+        return fileName.toString();
     }
 }

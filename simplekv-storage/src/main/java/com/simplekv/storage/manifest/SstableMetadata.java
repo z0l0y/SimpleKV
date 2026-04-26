@@ -1,5 +1,7 @@
 package com.simplekv.storage.manifest;
 
+import java.util.Objects;
+
 public class SstableMetadata {
     private long fileId;
     private int level;
@@ -97,5 +99,30 @@ public class SstableMetadata {
 
     public void setEntryCount(long entryCount) {
         this.entryCount = entryCount;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof SstableMetadata)) {
+            return false;
+        }
+        SstableMetadata that = (SstableMetadata) other;
+        return fileId == that.fileId
+                && level == that.level
+                && minSequence == that.minSequence
+                && maxSequence == that.maxSequence
+                && entryCount == that.entryCount
+                && Objects.equals(fileName, that.fileName)
+                && Objects.equals(minKey, that.minKey)
+                && Objects.equals(maxKey, that.maxKey)
+                && Objects.equals(bloomFileName, that.bloomFileName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fileId, level, fileName, minKey, maxKey, bloomFileName, minSequence, maxSequence, entryCount);
     }
 }
