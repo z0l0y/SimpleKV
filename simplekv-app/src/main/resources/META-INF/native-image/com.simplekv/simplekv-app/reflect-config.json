@@ -1,0 +1,19 @@
+[
+  {
+    "name": "com.simplekv.storage.manifest.ManifestState",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.simplekv.storage.manifest.SstableMetadata",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.simplekv.storage.wal.WalRecord",
+    "allPublicMethods": true,
+    "allDeclaredFields": true
+  }
+]
