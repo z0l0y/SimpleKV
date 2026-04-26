@@ -572,7 +572,7 @@ public final class SimpleKvEngine implements KeyValueStore {
 
         compactionRunning = true;
         final boolean forceRun = force;
-        compactionExecutor.submit(() -> {
+        compactionExecutor.execute(() -> {
             synchronized (mutex) {
                 try {
                     if (closed) {
@@ -662,14 +662,20 @@ public final class SimpleKvEngine implements KeyValueStore {
         probes++;
         Optional<InternalEntry> mutable = mutableMemTable.latestEntry(key, visibleSequence);
         if (mutable.isPresent()) {
-            latest = chooseLatest(latest, mutable.get());
+            InternalEntry candidate = mutable.get();
+            if (latest == null || candidate.key().sequence() > latest.key().sequence()) {
+                latest = candidate;
+            }
         }
 
         if (immutableMemTable != null) {
             probes++;
             Optional<InternalEntry> immutable = immutableMemTable.latestEntry(key, visibleSequence);
             if (immutable.isPresent()) {
-                latest = chooseLatest(latest, immutable.get());
+                InternalEntry candidate = immutable.get();
+                if (latest == null || candidate.key().sequence() > latest.key().sequence()) {
+                    latest = candidate;
+                }
             }
         }
 
@@ -684,7 +690,10 @@ public final class SimpleKvEngine implements KeyValueStore {
             probes++;
             Optional<InternalEntry> entry = reader.latestEntry(key, visibleSequence);
             if (entry.isPresent()) {
-                latest = chooseLatest(latest, entry.get());
+                InternalEntry candidate = entry.get();
+                if (latest == null || candidate.key().sequence() > latest.key().sequence()) {
+                    latest = candidate;
+                }
             }
         }
 
@@ -699,7 +708,10 @@ public final class SimpleKvEngine implements KeyValueStore {
             probes++;
             Optional<InternalEntry> entry = reader.latestEntry(key, visibleSequence);
             if (entry.isPresent()) {
-                latest = chooseLatest(latest, entry.get());
+                InternalEntry candidate = entry.get();
+                if (latest == null || candidate.key().sequence() > latest.key().sequence()) {
+                    latest = candidate;
+                }
             }
         }
 

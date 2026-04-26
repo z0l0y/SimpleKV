@@ -28,12 +28,17 @@ class PutGetBenchmarkTest {
         Path dataDir = Files.createTempDirectory("simplekv-bench-teardown-");
         Path lockedFile = dataDir.resolve("locked.tmp");
         Files.write(lockedFile, new byte[]{1});
-        Files.setAttribute(lockedFile, "dos:readonly", true);
+        boolean dosViewSupported = Files.getFileStore(dataDir).supportsFileAttributeView("dos");
+        if (dosViewSupported) {
+            Files.setAttribute(lockedFile, "dos:readonly", true);
+        }
 
         setField(benchmark, "dataDir", dataDir);
         benchmark.tearDown();
 
-        Files.setAttribute(lockedFile, "dos:readonly", false);
+        if (dosViewSupported && Files.exists(lockedFile)) {
+            Files.setAttribute(lockedFile, "dos:readonly", false);
+        }
         Files.deleteIfExists(lockedFile);
         Files.deleteIfExists(dataDir);
     }

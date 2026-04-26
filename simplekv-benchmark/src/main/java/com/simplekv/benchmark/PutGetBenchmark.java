@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.UUID;
 
 @State(Scope.Benchmark)
@@ -55,9 +56,10 @@ public class PutGetBenchmark {
 
     @Benchmark
     public byte[] putThenGet() throws IOException {
+        KeyValueStore localStore = Objects.requireNonNull(store, "Benchmark store is not initialized");
         String key = "k-" + System.nanoTime();
         byte[] value = ("v-" + key).getBytes(StandardCharsets.UTF_8);
-        store.put(key, value);
-        return store.get(key).orElse(null);
+        localStore.put(key, value);
+        return localStore.get(key).orElse(null);
     }
 }
