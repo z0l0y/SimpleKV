@@ -178,7 +178,10 @@ jobs:
         run: |
           Write-Host "Starting SimpleKV server..."
           $serverProcess = Start-Process -FilePath ".\simplekv-app\target\simplekv-server.exe" `
-            -PassThru -NoNewWindow -RedirectStandardOutput "server.log" -RedirectStandardError "server-error.log"
+          -ArgumentList "--port=7379" `
+          -PassThru -NoNewWindow `
+          -RedirectStandardOutput "server.log" `
+          -RedirectStandardError "server-error.log"
           Write-Host "Server process started with PID: $($serverProcess.Id)"
           Start-Sleep -Seconds 5
 
