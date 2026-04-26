@@ -1,5 +1,6 @@
 package com.simplekv.storage.manifest;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,10 @@ public class ManifestState {
         this.lastFlushedSequence = lastFlushedSequence;
     }
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP",
+            justification = "Manifest update flow intentionally mutates this list in place across modules"
+    )
     public List<SstableMetadata> getFiles() {
         return files;
     }

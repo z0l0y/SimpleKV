@@ -245,7 +245,7 @@
                 </dependencies>
                 <configuration>
                     <configLocation>google_checks.xml</configLocation>
-                    <consoleOutput>true</consoleOutput>
+                    <consoleOutput>false</consoleOutput>
                     <failsOnError>false</failsOnError>
                     <linkXRef>false</linkXRef>
                 </configuration>

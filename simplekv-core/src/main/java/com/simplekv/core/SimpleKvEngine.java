@@ -662,10 +662,7 @@ public final class SimpleKvEngine implements KeyValueStore {
         probes++;
         Optional<InternalEntry> mutable = mutableMemTable.latestEntry(key, visibleSequence);
         if (mutable.isPresent()) {
-            InternalEntry candidate = mutable.get();
-            if (latest == null || candidate.key().sequence() > latest.key().sequence()) {
-                latest = candidate;
-            }
+            latest = mutable.get();
         }
 
         if (immutableMemTable != null) {
@@ -673,9 +670,7 @@ public final class SimpleKvEngine implements KeyValueStore {
             Optional<InternalEntry> immutable = immutableMemTable.latestEntry(key, visibleSequence);
             if (immutable.isPresent()) {
                 InternalEntry candidate = immutable.get();
-                if (latest == null || candidate.key().sequence() > latest.key().sequence()) {
-                    latest = candidate;
-                }
+                latest = latest == null ? candidate : chooseLatest(latest, candidate);
             }
         }
 
@@ -691,9 +686,7 @@ public final class SimpleKvEngine implements KeyValueStore {
             Optional<InternalEntry> entry = reader.latestEntry(key, visibleSequence);
             if (entry.isPresent()) {
                 InternalEntry candidate = entry.get();
-                if (latest == null || candidate.key().sequence() > latest.key().sequence()) {
-                    latest = candidate;
-                }
+                latest = latest == null ? candidate : chooseLatest(latest, candidate);
             }
         }
 
@@ -709,9 +702,7 @@ public final class SimpleKvEngine implements KeyValueStore {
             Optional<InternalEntry> entry = reader.latestEntry(key, visibleSequence);
             if (entry.isPresent()) {
                 InternalEntry candidate = entry.get();
-                if (latest == null || candidate.key().sequence() > latest.key().sequence()) {
-                    latest = candidate;
-                }
+                latest = latest == null ? candidate : chooseLatest(latest, candidate);
             }
         }
 
@@ -721,9 +712,6 @@ public final class SimpleKvEngine implements KeyValueStore {
     }
 
     private InternalEntry chooseLatest(InternalEntry current, InternalEntry candidate) {
-        if (current == null) {
-            return candidate;
-        }
         return candidate.key().sequence() > current.key().sequence() ? candidate : current;
     }
 

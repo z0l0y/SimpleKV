@@ -204,7 +204,7 @@ jobs:
           exit 1
 
       - name: Run integration tests
-        run: mvn -B -ntp -pl simplekv-client test
+        run: mvn -B -ntp -pl simplekv-client -am test
 
       - name: Stop server
         shell: powershell
