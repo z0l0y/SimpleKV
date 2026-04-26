@@ -11,6 +11,8 @@ import com.simplekv.app.diag.DiagnosticService;
 import com.simplekv.app.server.SimpleKvServerBanner;
 import com.simplekv.app.server.SimpleKvSkspServer;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,6 +26,10 @@ public final class SimpleKvNativeServerApplication {
     private SimpleKvNativeServerApplication() {
     }
 
+    @SuppressFBWarnings(
+            value = "THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION",
+            justification = "Main entry point declares IOException for simplicity; callers are the JVM launch sequence."
+    )
     public static void main(String[] args) throws IOException {
         SimpleKvStorageProperties storage = new SimpleKvStorageProperties();
         SimpleKvServerProperties server = new SimpleKvServerProperties();

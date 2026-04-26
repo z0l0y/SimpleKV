@@ -63,7 +63,7 @@ public class SimpleKvSkspServer {
 
     @SuppressFBWarnings(
             value = "EI_EXPOSE_REP2",
-            justification = "Server retains a shared KeyValueStore collaborator managed by application lifecycle."
+            justification = "Server retains shared collaborators (KeyValueStore, SimpleKvServerProperties) managed by application lifecycle."
     )
     public SimpleKvSkspServer(SimpleKvCli cli,
                               KeyValueStore store,

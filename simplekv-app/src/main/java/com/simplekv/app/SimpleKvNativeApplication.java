@@ -8,6 +8,8 @@ import com.simplekv.app.config.SimpleKvConfiguration;
 import com.simplekv.app.config.SimpleKvStorageProperties;
 import com.simplekv.app.diag.DiagnosticService;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
@@ -24,6 +26,10 @@ public final class SimpleKvNativeApplication {
     private SimpleKvNativeApplication() {
     }
 
+    @SuppressFBWarnings(
+            value = "THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION",
+            justification = "Main entry point declares IOException for simplicity; callers are the JVM launch sequence."
+    )
     public static void main(String[] args) throws IOException {
         SimpleKvStorageProperties properties = new SimpleKvStorageProperties();
         applySystemPropertyOverrides(properties);
