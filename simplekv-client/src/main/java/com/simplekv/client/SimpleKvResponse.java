@@ -36,7 +36,11 @@ public class SimpleKvResponse {
 
     
     public String getFirst() {
-        return payload.isEmpty() ? null : payload.get(0);
+        if (payload.isEmpty()) {
+            return null;
+        }
+        String first = payload.get(0);
+        return "(nil)".equals(first) ? null : first;
     }
 
     

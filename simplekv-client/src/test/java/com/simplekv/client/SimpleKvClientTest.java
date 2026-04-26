@@ -203,7 +203,7 @@ class SimpleKvClientTest {
 
         SimpleKvResponse response = client.exists("exists-key", "non-exists-key");
         assertTrue(response.isOk());
-        assertEquals(2, response.size());
+        assertEquals("1", response.getFirst());
 
         client.del("exists-key");
     }
