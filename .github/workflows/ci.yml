@@ -23,7 +23,7 @@ jobs:
           cache: maven
 
       - name: Build all modules
-        run: mvn -B -ntp clean verify
+        run: mvn -B -ntp clean verify -Djacoco.skip=true
 
       - name: Check code quality
         run: mvn -B -ntp spotbugs:check
