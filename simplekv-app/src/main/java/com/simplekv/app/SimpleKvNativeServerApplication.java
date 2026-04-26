@@ -24,7 +24,7 @@ public final class SimpleKvNativeServerApplication {
     private SimpleKvNativeServerApplication() {
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         SimpleKvStorageProperties storage = new SimpleKvStorageProperties();
         SimpleKvServerProperties server = new SimpleKvServerProperties();
 

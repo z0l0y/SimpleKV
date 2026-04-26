@@ -24,7 +24,7 @@ public final class SimpleKvNativeApplication {
     private SimpleKvNativeApplication() {
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         SimpleKvStorageProperties properties = new SimpleKvStorageProperties();
         applySystemPropertyOverrides(properties);
 

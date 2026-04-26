@@ -6,6 +6,7 @@ import com.simplekv.api.store.KeyValueStore;
 import com.simplekv.app.cli.SimpleKvCli;
 import com.simplekv.app.cli.SimpleKvCommandLineParser;
 import com.simplekv.app.config.SimpleKvServerProperties;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -50,22 +51,30 @@ public class SimpleKvSkspServer {
 
     private final SimpleKvCli cli;
     private final KeyValueStore store;
-    private final SimpleKvServerProperties properties;
     private final SimpleKvServerBanner banner;
+    private final String host;
+    private final int port;
+    private final int backlog;
     private final AtomicBoolean running = new AtomicBoolean(false);
     private final CountDownLatch started = new CountDownLatch(1);
 
     private volatile ServerSocket serverSocket;
     private volatile int boundPort;
 
+    @SuppressFBWarnings(
+            value = "EI_EXPOSE_REP2",
+            justification = "Server retains a shared KeyValueStore collaborator managed by application lifecycle."
+    )
     public SimpleKvSkspServer(SimpleKvCli cli,
                               KeyValueStore store,
                               SimpleKvServerProperties properties,
                               SimpleKvServerBanner banner) {
         this.cli = cli;
         this.store = store;
-        this.properties = properties;
         this.banner = banner;
+        this.host = properties.getHost();
+        this.port = properties.getPort();
+        this.backlog = properties.getBacklog();
     }
 
     public void start() throws IOException {
@@ -76,12 +85,12 @@ public class SimpleKvSkspServer {
         try (ServerSocket listener = new ServerSocket()) {
             serverSocket = listener;
             listener.setReuseAddress(true);
-            listener.bind(new InetSocketAddress(properties.getHost(), properties.getPort()), properties.getBacklog());
+            listener.bind(new InetSocketAddress(host, port), backlog);
             boundPort = listener.getLocalPort();
             started.countDown();
 
             banner.print(boundPort);
-            log.info("Ready to accept connections on {}:{}", properties.getHost(), Integer.valueOf(boundPort));
+            log.info("Ready to accept connections on {}:{}", host, Integer.valueOf(boundPort));
 
             while (running.get()) {
                 try {

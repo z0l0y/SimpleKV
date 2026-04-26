@@ -17,25 +17,25 @@ public class SimpleKvServerBanner {
     private static final String ANSI_BLUE = "\u001B[34m";
     private static final String ANSI_MAGENTA = "\u001B[35m";
 
-    private final SimpleKvServerProperties serverProperties;
-    private final SimpleKvStorageProperties storageProperties;
+    private final String host;
+    private final String dataDir;
+    private final boolean bannerEnabled;
 
     public SimpleKvServerBanner(SimpleKvServerProperties serverProperties,
                                 SimpleKvStorageProperties storageProperties) {
-        this.serverProperties = serverProperties;
-        this.storageProperties = storageProperties;
+        this.host = serverProperties.getHost();
+        this.dataDir = String.valueOf(storageProperties.getDataDir());
+        this.bannerEnabled = serverProperties.isBannerEnabled();
     }
 
     public void print(int boundPort) {
-        if (!serverProperties.isBannerEnabled()) {
+        if (!bannerEnabled) {
             return;
         }
 
         long pid = ProcessHandle.current().pid();
         String version = Optional.ofNullable(SimpleKvServerBanner.class.getPackage().getImplementationVersion())
                 .orElse("dev");
-        String host = serverProperties.getHost();
-        String dataDir = String.valueOf(storageProperties.getDataDir());
         String endpoint = host + ":" + boundPort;
         PrintStream out = System.out;
 
