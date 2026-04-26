@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: simplekv
+  main:
+    web-application-type: none
+    banner-mode: off
+
+simplekv:
+  mode: server
+  server:
+    host: 127.0.0.1
+    port: 7379
+    backlog: 128
+    banner-enabled: true
+  storage:
+    data-dir: ./data
+    mem-table-max-entries: 10000
+    scan-default-limit: 100
+    cache-max-entries: 4096
+    bloom-filter-enabled: true
+    bloom-false-positive-rate: 0.01
+    level0-compaction-trigger: 4
+    level0-max-files: 16
+    flush-batch-size: 1000
+    tombstone-retention-seconds: 3600
+    compaction-style: leveled
+
+logging:
+  level:
+    root: INFO
+    com.simplekv: INFO
