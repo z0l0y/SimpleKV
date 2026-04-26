@@ -1,0 +1,25 @@
+target/
+.idea/
+.kiro/
+docs/
+data/
+.vscode/
+*.iml
+*.log
+*.tmp
+*.swp
+*.DS_Store
+
+# Sensitive local config and credentials
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+*.kdbx
+
+# Local runtime logs
+server.log
+server-error.log
